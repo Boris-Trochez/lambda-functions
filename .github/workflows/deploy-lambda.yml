@@ -27,6 +27,13 @@ jobs:
           zip -r ../../${{ github.event.inputs.lambda_function }}.zip ${{ github.event.inputs.lambda_function }}.js
           cd ../..
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: sa-east-1 # Change to your AWS region
+
       - name: Deploy to AWS Lambda
         run: |
           aws lambda update-function-code --function-name ${{ github.event.inputs.lambda_function }} --zip-file fileb://${{ github.event.inputs.lambda_function }}.zip
